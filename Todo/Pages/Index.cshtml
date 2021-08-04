@@ -1,0 +1,41 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    <form method="post">
+        <button id="AddItemButton" class="btn btn-success">
+            Add task
+        </button>
+        <input type="hidden" value="@Model.AddItem.ToString()" Id="AddItem" name="AddItem" />
+        <script>
+            $('#AddItemButton').click(function () {
+                $('#AddItem').val('true')
+            });
+        </script>
+        <h2>Tasks</h2>
+        <ul id="TaskList">
+
+            @for (int i = 0; i < Model.Items.Count(); i++)
+            {
+                <li>
+                    <div class="input-group">
+                        <input hidden asp-for="Items[i].Id" class="form-control" />
+                        <input asp-for="Items[i].Text" class="form-control" onchange="$(this).closest('form').submit();" />
+                        <input asp-for="Items[i].Completed" class="form-control" onchange="$(this).closest('form').submit();" />
+                        <span class="form-control" id="delete_@i">X</span>
+                        <input asp-for="Items[i].Delete" class="form-control hidden"/>
+                        <script>
+                        $('#delete_@i').click(function () {
+                            $("#Items_@(i)__Delete").attr('checked', 'checked');
+                            $(this).closest('form').submit();
+                        })
+                        </script>
+                    </div>
+                </li>
+            }
+        </ul>
+    </form>
+</div>
